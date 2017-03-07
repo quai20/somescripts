@@ -1,10 +1,10 @@
 #!/bin/bash
-
+# K.BALEM - IFREMER LOPS - 2017
 # Usage : 
-# Doc : ./juld -h
-# Current date to JULD  : ./juld.csh
-# Calendar date to JULD : ./juld.csh 10 02 2016 10 35 45
-# JULD to Calendar date : ./juld.csh 24146.575
+# Doc : ./jours1900 -h
+# Current date to jours1900  : ./jours1900.csh
+# Calendar date to jours1900 : ./jours1900.csh 10 02 2016 10 35 45
+# 1900D to Calendar date : ./jours1900.csh 24146.575
 
 case "$#" in
 	0 ) #current date to jour1900

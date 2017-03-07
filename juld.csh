@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# K.BALEM - IFREMER LOPS - 2017
 # Usage : 
 # Doc : ./juld -h
 # Current date to JULD  : ./juld.csh
