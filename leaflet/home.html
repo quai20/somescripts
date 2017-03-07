@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Index-Latest Reference Map</title>
+<meta charset='utf-8' />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<img src="src/cop.png">
+<center><span id="kloader">
+
+<div class='container'>
+  <div class='loader'>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--text'></div>
+  </div>
+</div>
+
+</span></center>
+<!-- CSS -->
+<link rel="stylesheet" href="src/mycss.css" />
+<link rel="stylesheet" href="src/leaflet/leaflet.css" />
+<link rel="stylesheet" href="src/Leaflet.markercluster-master/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="src/Leaflet.markercluster-master/dist/MarkerCluster.Default.css" />
+<link rel="stylesheet" href="src/Leaflet-MiniMap-master/src/Control.MiniMap.css" />
+<link rel="stylesheet" href="src/leaflet-search-master/src/leaflet-search.css" />
+<link rel="stylesheet" href="src/Leaflet.MousePosition-master/src/L.Control.MousePosition.css" />
+<link rel="stylesheet" href="src/Leaflet.MeasureControl-gh-pages/leaflet.measurecontrol.css" />
+<link rel="stylesheet" href="src/Leaflet.MeasureControl-gh-pages/Leaflet.draw/dist/leaflet.draw.css" />
+<!--<link rel="stylesheet" href="src/jquery-ui.css" />-->
+
+<!-- Leaflet -->
+<script src="src/leaflet/leaflet.js" type="text/javascript"</script>
+<script src="src/leaflet/leaflet-src.js" type="text/javascript"></script>
+
+<!-- Marker Cluster -->
+<script src="src/Leaflet.markercluster-master/dist/leaflet.markercluster-src.js"></script>
+<script src="src/Leaflet.markercluster-master/dist/leaflet.markercluster.js"></script>
+
+<!-- Mini Map -->
+<script src="src/Leaflet-MiniMap-master/src/Control.MiniMap.js" type="text/javascript"></script>
+
+<!-- Search -->
+<script src="src/leaflet-search-master/src/leaflet-search.js"></script>
+
+<!-- Layer support -->
+<script src="src/Leaflet.FeatureGroup.SubGroup-master/leaflet.featuregroup.subgroup-src.js"></script>
+
+<!-- Mouse position -->
+<script src="src/Leaflet.MousePosition-master/src/L.Control.MousePosition.js"></script>
+
+<!-- Measurement -->
+<script src="src/Leaflet.MeasureControl-gh-pages/Leaflet.draw/dist/leaflet.draw.js"></script>
+<script src="src/Leaflet.MeasureControl-gh-pages/leaflet.measurecontrol.js"></script>
+
+<!-- Provider 
+<script src="src/leaflet-providers-master/leaflet-providers.js"></script>-->
+
+<!-- Slider 
+<script src="src/jquery-1.9.1.min.js"></script>
+<script src="src/jquery-ui.js"></script>
+<script src="src/LeafletSlider-master/SliderControl.js"></script>-->
+
+<!-- Vars -->
+<script src="vars/PR_BA.js"></script>
+<script src="vars/PR_BO.js"></script>
+<script src="vars/PR_CT.js"></script>
+<script src="vars/PR_GL.js"></script>
+<script src="vars/PR_ML.js"></script>
+<script src="vars/PR_PF.js"></script>
+<script src="vars/PR_SM.js"></script>
+<script src="vars/PR_TE.js"></script>
+<script src="vars/PR_XB.js"></script>
+<script src="vars/TS_DB.js"></script>
+<script src="vars/TS_DC.js"></script>
+<script src="vars/TS_FB.js"></script>
+<script src="vars/TS_MO.js"></script>
+<script src="vars/TS_PF.js"></script>
+<script src="vars/TS_RF.js"></script>
+<script src="vars/TS_TS.js"></script> 
+<script src="vars/Date.js"></script> 
+
+<!-- Map Div --> 
+<style> map </style>
+</head>
+<body>
+<font face="Arial">
+<div id="map"></div>
+<br><center><b>This map shows the latest (30 days) files of Copernicus Marine InSitu TAC</b><br>
+INSITU_GLO_NRT_OBSERVATIONS_013_030
+<font size=2>
+<p id="datep"></p>
+</font></center>
+<script type="text/javascript">
+document.getElementById("datep").textContent = ("Map date :" + Data_Date);
+document.getElementById("kloader").textContent="";
+
+var map = L.map('map').setView([23, 2], 3);
+map.options.maxZoom=14;
+
+var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+//var osmUrl='http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+var osmAttrib='Map data &copy; OpenStreetMap contributors';
+//var osmAttrib='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ';
+L.tileLayer(osmUrl, {attribution: osmAttrib, id: 'mapbox.streets'}).addTo(map);
+//L.tileLayer.provider('OpenMapSurfer.Roads').addTo(map);
+//L.tileLayer.provider('Esri.OceanBasemap').addTo(map);
+
+var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 8, attribution: osmAttrib });
+var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
+
+L.control.mousePosition().addTo(map);
+L.Control.measureControl().addTo(map);
+
+//var markers = L.markerClusterGroup({disableClusteringAtZoom: 7});
+var mcg = L.markerClusterGroup(),
+	group0 =  L.featureGroup.subGroup(mcg), 
+	group1 = L.featureGroup.subGroup(mcg), 
+	group2 = L.featureGroup.subGroup(mcg),	
+	group3 =  L.featureGroup.subGroup(mcg),
+	group4 = L.featureGroup.subGroup(mcg),
+	group5 = L.featureGroup.subGroup(mcg),
+	group6 =  L.featureGroup.subGroup(mcg),
+	group7 = L.featureGroup.subGroup(mcg),
+	group8 = L.featureGroup.subGroup(mcg),
+	group9 =  L.featureGroup.subGroup(mcg),
+	group10 = L.featureGroup.subGroup(mcg),
+	group11 = L.featureGroup.subGroup(mcg),
+	group12 =  L.featureGroup.subGroup(mcg),
+	group13 = L.featureGroup.subGroup(mcg),
+	group14 = L.featureGroup.subGroup(mcg),
+	group15 = L.featureGroup.subGroup(mcg),
+	control = L.control.layers(null, null, { collapsed: false }),
+	i, mapdata,marker;
+//mcg.addTo(map);
+
+var cssic0 = L.divIcon({className: 'mico0', iconsize: [20, 20]});
+var cssic1 = L.divIcon({className: 'mico1', iconsize: [20, 20]});
+var cssic2 = L.divIcon({className: 'mico2', iconsize: [20, 20]});
+var cssic3 = L.divIcon({className: 'mico3', iconsize: [20, 20]});
+var cssic4 = L.divIcon({className: 'mico4', iconsize: [20, 20]});
+var cssic5 = L.divIcon({className: 'mico5', iconsize: [20, 20]});
+var cssic6 = L.divIcon({className: 'mico6', iconsize: [20, 20]});
+var cssic7 = L.divIcon({className: 'mico7', iconsize: [20, 20]});
+var cssic8 = L.divIcon({className: 'mico8', iconsize: [20, 20]});
+var cssic9 = L.divIcon({className: 'mico9', iconsize: [20, 20]});
+var cssic10 = L.divIcon({className: 'mico10', iconsize: [20, 20]});
+var cssic11 = L.divIcon({className: 'mico11', iconsize: [20, 20]});
+var cssic12 = L.divIcon({className: 'mico12', iconsize: [20, 20]});
+var cssic13 = L.divIcon({className: 'mico13', iconsize: [20, 20]});
+var cssic14 = L.divIcon({className: 'mico14', iconsize: [20, 20]});
+var cssic15 = L.divIcon({className: 'mico15', iconsize: [20, 20]});
+
+//Rechercher dans les titres
+var controlSearch = new L.Control.Search({layer: mcg, initial: false, position:'topleft'});
+
+//Remplissage des couches
+var mapdata=Data_PR_BA;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic0});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group0);};
+var mapdata=Data_PR_BO;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic1});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group1);};
+var mapdata=Data_PR_CT;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic2});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group2);};
+var mapdata=Data_PR_GL;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic3});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group3);};
+var mapdata=Data_PR_ML;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic4});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group4);};
+var mapdata=Data_PR_PF;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic5});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group5);};
+var mapdata=Data_PR_TE;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic6});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group6);};
+var mapdata=Data_PR_XB;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic7});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group7);};
+var mapdata=Data_PR_SM;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic8});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group8);};
+var mapdata=Data_TS_DB;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic9});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group9);};
+var mapdata=Data_TS_DC;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic10});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group10);};
+var mapdata=Data_TS_FB;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic11});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group11);};
+var mapdata=Data_TS_MO;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic12});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group12);};
+var mapdata=Data_TS_PF;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic13});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group13);};
+var mapdata=Data_TS_RF;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic14});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group14);};
+var mapdata=Data_TS_TS;
+for (var i = 0; i < mapdata.length; i++) {
+  var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic15});
+  marker.bindPopup(mapdata[i].Platform + "<br>" + mapdata[i].mtype + "<br>" + mapdata[i].Link);
+  marker.addTo(group15);};
+
+control.addOverlay(group0, 'GTS BATHY (Profiles)');
+control.addOverlay(group1, 'BOTTLE (Profiles)');
+control.addOverlay(group2, 'CTD (Profiles)');
+control.addOverlay(group3, 'GLIDER (Profiles)');
+control.addOverlay(group4, 'MINILOGGER (Profiles)');
+control.addOverlay(group5, 'PROFILER (Profiles)');
+control.addOverlay(group6, 'GTS TESAC (Profiles)');
+control.addOverlay(group7, 'XBT (Profiles)');
+control.addOverlay(group8, 'SEA MAMALS (Profiles)');
+control.addOverlay(group9, 'DRIFTER (Time Series)');
+control.addOverlay(group10, 'DRIFTER CURRENT (Time Series)');
+control.addOverlay(group11, 'FERRYBOX (Time Series)');
+control.addOverlay(group12, 'MOORING (Time Series)');
+control.addOverlay(group13, 'PROFILER (Time Series)');
+control.addOverlay(group14, 'RIVER FLOW (Time Series)');
+control.addOverlay(group15, 'TSG (Time Series)');
+control.addTo(map);
+
+//tracer les données par défaut
+group12.addTo(map);
+
+//Barre de recherche
+map.addControl( controlSearch );
+
+//Slider temporel
+//var sliderControl = L.control.sliderControl({position : "topleft",layer:mcg,range: true});
+//map.addControl(sliderControl);
+//sliderControl.startSlider();
+
+//Action du click sur marker
+document.getElementById('doit').onclick = function () {
+			var m = markerList[Math.floor(Math.random() * markerList.length)];
+			markers.zoomToShowLayer(m, function () {
+			m.openPopup();
+			});
+		};
+
+</script>
+</body>
+</html>
