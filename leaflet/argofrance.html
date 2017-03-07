@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Argo France Map</title>
+<meta charset='utf-8' />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<img src="src/ifr.png">
+<center><span id="kloader">
+
+<div class='container'>
+  <div class='loader'>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--text'></div>
+  </div>
+</div>
+
+</span></center>
+<!-- CSS -->
+<link rel="stylesheet" href="src/mycss.css" />
+<link rel="stylesheet" href="src/leaflet/leaflet.css" />
+<link rel="stylesheet" href="src/Leaflet.markercluster-master/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="src/Leaflet.markercluster-master/dist/MarkerCluster.Default.css" />
+<link rel="stylesheet" href="src/Leaflet-MiniMap-master/src/Control.MiniMap.css" />
+<link rel="stylesheet" href="src/leaflet-search-master/src/leaflet-search.css" />
+<link rel="stylesheet" href="src/Leaflet.MousePosition-master/src/L.Control.MousePosition.css" />
+<link rel="stylesheet" href="src/Leaflet.MeasureControl-gh-pages/leaflet.measurecontrol.css" />
+<link rel="stylesheet" href="src/Leaflet.MeasureControl-gh-pages/Leaflet.draw/dist/leaflet.draw.css" />
+<link rel="stylesheet" href="src/Leaflet.MeasureControl-gh-pages/Leaflet.draw/dist/leaflet.draw.css" />
+<link rel="stylesheet" href="src/jquery-ui.css" />
+
+<!-- Leaflet -->
+<script src="src/leaflet/leaflet.js" type="text/javascript"</script>
+<script src="src/leaflet/leaflet-src.js" type="text/javascript"></script>
+
+<!-- Marker Cluster -->
+<script src="src/Leaflet.markercluster-master/dist/leaflet.markercluster-src.js"></script>
+<script src="src/Leaflet.markercluster-master/dist/leaflet.markercluster.js"></script>
+
+<!-- Mini Map -->
+<script src="src/Leaflet-MiniMap-master/src/Control.MiniMap.js" type="text/javascript"></script>
+
+<!-- Search -->
+<script src="src/leaflet-search-master/src/leaflet-search.js"></script>
+
+<!-- Layer support -->
+<script src="src/Leaflet.MarkerCluster.LayerSupport-master/leaflet.markercluster.layersupport-src.js"></script>
+
+<!-- Mouse position -->
+<script src="src/Leaflet.MousePosition-master/src/L.Control.MousePosition.js"></script>
+
+<!-- Measurement -->
+<script src="src/Leaflet.MeasureControl-gh-pages/Leaflet.draw/dist/leaflet.draw.js"></script>
+<script src="src/Leaflet.MeasureControl-gh-pages/leaflet.measurecontrol.js"></script>
+
+<!-- Slider -->
+<script src="src/jquery-1.9.1.min.js"></script>
+<script src="src/jquery-ui.js"></script>
+<script src="src/LeafletSlider-master/SliderControl.js"></script>
+
+<!-- Vars -->
+<script src="platform/ARGOFRANCE.js"></script>
+<script src="platform/Dateargo.js"></script> 
+
+<!-- Map Div --> 
+<style> map </style>
+</head>
+<body>
+<font face="Arial">
+<div id="map"></div>
+<br><center><b>ARGOFRANCE</b><br>
+<font size=2>
+<p id="datep"></p>
+</font></center>
+<script type="text/javascript">
+document.getElementById("datep").textContent = ("Map date :" + Data_Date);
+document.getElementById("kloader").textContent="";
+
+var map = L.map('map').setView([23, 2], 3);
+map.options.maxZoom=13;
+
+var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var osmAttrib='Map data &copy; OpenStreetMap contributors';
+L.tileLayer(osmUrl, {attribution: osmAttrib, id: 'mapbox.streets'}).addTo(map);
+
+var osm2 = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 8, attribution: osmAttrib });
+var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
+
+L.control.mousePosition().addTo(map);
+L.Control.measureControl().addTo(map);
+
+group0 =  L.layerGroup(); 
+
+var cssic1 = L.divIcon({className: 'mico1', iconsize: [20, 20]});
+var cssic11 = L.divIcon({className: 'mico11', iconsize: [20, 20]});
+
+//Remplissage des couches
+var mapdata=Data_ARGOFRANCE;
+var today = new Date();
+for (var i = 0; i < mapdata.length; i++) {
+var somedate=new Date(mapdata[i].time);
+  if (somedate.valueOf() > today.valueOf()-20*86400000 ) {
+    var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic1,time: mapdata[i].time});
+    marker.bindPopup(mapdata[i].Platform + "<br><b>Type </b>: " + mapdata[i].mtype + "<br><b>Last Update </b>: " + mapdata[i].time + "<br><b>Institution </b>: " + mapdata[i].Institution + "<br><a href=\"http://www.ifremer.fr/co-argoFloats/float?ptfCode=" + mapdata[i].Platform + "\" target=\"_blank\" > Argo Float Coriolis Page</a>" + "<br>Status : <b>Active</b>");}
+  else {
+    var marker = L.marker([mapdata[i].latitude,mapdata[i].longitude],{title: mapdata[i].Platform,icon: cssic11,time: mapdata[i].time});
+    marker.bindPopup(mapdata[i].Platform + "<br><b>Type </b>: " + mapdata[i].mtype + "<br><b>Last Update </b>: " + mapdata[i].time + "<br><b>Institution </b>: " + mapdata[i].Institution + "<br><a href=\"http://www.ifremer.fr/co-argoFloats/float?ptfCode=" + mapdata[i].Platform + "\" target=\"_blank\" > Argo Float Coriolis Page</a>" + "<br>Status : <b>Inactive</b>");}
+marker.addTo(group0);};
+
+//tracer les données
+//L.markerClusterGroup.layerSupport().addTo(map).checkIn(group0);
+group0.addTo(map);
+
+//Rechercher dans les titres
+var controlSearch = new L.Control.Search({layer: group0, initial: false, position:'topleft'});
+map.addControl( controlSearch );
+
+//Slider
+var sliderControl = L.control.sliderControl({layer:group0, range:true});
+map.addControl(sliderControl);
+sliderControl.startSlider();
+
+</script>
+</body>
+</html>
